@@ -58,18 +58,18 @@
    <!-- <logger name="RequestLoggerFilter.headers" level="INFO" additivity="false"> -->
    <!-- <appender-ref ref="access"/> -->
    <!-- </logger> -->
-   <logger name="org.ow2.authzforce" additivity="false" level="INFO">
+   <logger name="org.ow2.authzforce" additivity="false" level="WARN">
       <!-- <appender-ref ref="error" /> -->
       <appender-ref ref="stdout" />
    </logger>
    <!-- HTTP/JAX-RS/SOAP request/response debugging -->
    <!-- For logging request/response to/from webapp, only logger "org.apache.cxf" in level INFO is required -->
-   <logger name="org.apache.cxf" additivity="false" level="INFO">
+   <logger name="org.apache.cxf" additivity="false" level="WARN">
       <!-- <appender-ref ref="error" /> -->
       <appender-ref ref="stdout" />
    </logger>
    <!--<logger name="org.apache.http" additivity="false" level="DEBUG"> <appender-ref ref="error" /> </logger> <logger name="org.apache.http.wire" level="ERROR"> <appender-ref ref="error" /> </logger>-->
-   <root level="INFO">
+   <root level="WARN">
       <!-- <appender-ref ref="error" /> -->
       <appender-ref ref="stdout" />
    </root>

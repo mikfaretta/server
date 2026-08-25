@@ -20,7 +20,7 @@
 
 # The alternative is to use FROM ubuntu:* then install tomcat ubuntu package and use upstart/sysctl init script but this is not the way to go:
 # https://github.com/docker/docker/issues/6800
-FROM tomcat:10-jre17-temurin-jammy
+FROM tomcat:11-jre17-temurin-jammy
 LABEL maintainer="AuthzForce Team"
 LABEL org.label-schema.schema-version="1.0"
 # LABEL org.label-schema.vendor=""
@@ -48,9 +48,10 @@ RUN apt-get update --assume-yes -qq && \
  
 RUN locale-gen en_US en_US.UTF-8 && \
     dpkg-reconfigure locales
-ENV LANG en_US.UTF-8 
-ENV LANGUAGE en_US:en 
-ENV LC_ALL en_US.UTF-8 
+
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US:en
+ENV LC_ALL=en_US.UTF-8
 
 RUN cd /opt && \
  tar xvzf authzforce-ce-server.tar.gz && \

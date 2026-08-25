@@ -4,6 +4,40 @@ All notable changes to this project are documented in this file following the [K
 Issues reported on [GitHub](https://github.com/authzforce/server/issues) are referenced in the form of `[GH-N]`, where N is the issue number. Issues reported on [OW2](https://jira.ow2.org/browse/AUTHZFORCE/) are mentioned in the form of `[OW2-N]`, where N is the issue number.
 
 
+## 12.1.0
+### Fixed
+- Security vulnerability: Unbounded JSON Parsing Before Configured DoS Limits in XACML/JSON PDP Endpoint. More info: [Security Advisory](https://github.com/authzforce/server/security/advisories/GHSA-px85-w7fx-4cgc)
+- Bug: AttributeSelectors in a Target are rejected (error) even if Policy(Set)Defaults/XPathVersion properly declared before the Target
+- Bug: Bad regex for validating XACML dnsName values with a wildcard
+
+### Changed
+- Ugraded parent project: 9.3.0
+- Upgraded dependencies:
+  - authzforce-ce-pap-dao-flat-file: 15.1.0
+    - authzforce-ce-core-pap-api: 13.1.0
+      - org.json:json: 20250107
+    - authzforce-ce-core-pdp-engine / authzforce-ce-core-pdp-io-xacml-json: 21.2.0
+    - authzforce-ce-core-pdp-api: 22.2.0
+      - authzforce-ce-xacml-model / authzforce-ce-pdp-ext-model: 9.3.0
+	  - Saxon HE: 12.10
+	  - Guava: 33.5.0-jre
+    
+  - authzforce-ce-jaxrs-utils: 3.1.0
+    - authzforce-ce-xacml-json-model: 4.2.0
+    - Jakarta RESTful WS API: 4.0.0
+    - Jakarta XML Binding API: 4.0.4
+    
+  - Jakarta Servlet API: 6.1.0
+  - SLF4J API: 2.0.17
+  - Spotbugs Annotations: 4.9.8
+  - Apache CXF: 4.2.3
+  - Spring Core: 7.0.9
+  - Jettison: 1.5.7
+  - Logback: 1.6.3
+  - Jakarta XML WS API: 4.0.3
+  -	JAXB Runtime: 4.0.6
+
+
 ## 12.0.1
 ### Fixed
 - Fixed Docker image (Dockerfile) and Debian package: change of Tomcat version (9->10) and JRE version (11->17)
