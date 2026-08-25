@@ -96,6 +96,8 @@
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
+			<!-- Temporary CVE fix. TODO: upgrade and use parent project version. -->
+			<version>1.6.3</version>
 		</dependency>
 		<!-- For some reason, this dependency is needed at runtime when deployed in Tomcat -->
 		<dependency>

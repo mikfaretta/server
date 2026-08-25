@@ -318,11 +318,10 @@ $ mvn -Dhttps.proxyHost=proxyhostname -Dhttps.proxyPort=8080 jgitflow:release-st
     ```
 
     More info on jgitflow: http://jgitflow.bitbucket.org/
-5. Connect and log in to the OSS Nexus Repository Manager:
-    https://oss.sonatype.org/
-6. Go to Staging Profiles and select the pending repository authzforce-\*...
-    you just uploaded with `jgitflow:release-finish`
-7. Click the Release button to release to Maven Central.
+5. Connect and log in to the Maven Central Repository:
+    https://central.sonatype.com/
+6. Go to Deployments and select the pending Deployment
+7. Click the Publish button to release to Maven Central.
 8. When the artifacts have been successfully published on Maven Central, follow
     the instructions in the
     [Release section of fiware repository](https://github.com/authzforce/fiware/blob/master/README.md#release).
@@ -332,7 +331,7 @@ $ mvn -Dhttps.proxyHost=proxyhostname -Dhttps.proxyPort=8080 jgitflow:release-st
      $ mvn clean package
      $ cd dist/target
      $ chmod +x release-docker.sh
-     $ ./release.sh
+     $ ./release-docker.sh
    ```
 10. Update the versions in badges at the top of this file.
 11. Create a release on Github with a description based on the
