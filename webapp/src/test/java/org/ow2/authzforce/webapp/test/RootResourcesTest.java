@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2024 THALES.
+ * Copyright (C) 2012-2026 THALES.
  *
  * This file is part of AuthzForce CE.
  *
@@ -136,7 +136,7 @@ public class RootResourcesTest extends RestServiceTest
 		try
 		{
 			prodMeta = prodMetadataResClient.getProductMetadata();
-			assertEquals(prodMeta.getName(), "authzforce-ce-server", "Wrong product name returned by GET /version");
+			assertEquals(prodMeta.getName(), "AuthzForce CE Server", "Wrong product name returned by GET /version");
 			assertTrue(prodMeta.getVersion().matches("^\\d+\\.\\d+\\.\\d+$"), "Wrong product version returned by GET /version");
 			assertTrue(prodMeta.getReleaseDate().isValid(), "Wrong product release date returned by GET /version");
 			assertEquals(prodMeta.getDoc(), "https://authzforce.github.io/fiware/authorization-pdp-api-spec/5.2/");

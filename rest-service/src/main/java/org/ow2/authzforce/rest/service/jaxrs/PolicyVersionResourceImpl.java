@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2024 THALES.
+ * Copyright (C) 2012-2026 THALES.
  *
  * This file is part of AuthzForce CE.
  *
@@ -35,7 +35,7 @@ import java.util.Map;
  * Policy Version resource implementation. Each policy version managed by {@link PolicyResourceImpl} is an instance of this class.
  *
  */
-public class PolicyVersionResourceImpl implements PolicyVersionDaoClient, PolicyVersionResource
+public final class PolicyVersionResourceImpl implements PolicyVersionDaoClient, PolicyVersionResource
 {
 	private static final NotFoundException NOT_FOUND_EXCEPTION = new NotFoundException();
 

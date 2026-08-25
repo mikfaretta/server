@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2024 THALES.
+ * Copyright (C) 2012-2026 THALES.
  *
  * This file is part of AuthzForce CE.
  *
@@ -124,7 +124,7 @@ public class SecurityDemoTest extends RestServiceTest
 		}
 	}
 
-	@Test(expectedExceptions = BadRequestException.class)
+	@Test(expectedExceptions = ClientErrorException.class) // HTTP 413 Request Entity Too Large
 	public void addPolicyWithTooBigId()
 	{
 		final char[] chars = new char[XML_MAX_ATTRIBUTE_SIZE_EFFECTIVE + 1];
@@ -134,7 +134,7 @@ public class SecurityDemoTest extends RestServiceTest
 		testDomainHelper.testAddAndGetPolicy(policySet);
 	}
 
-	@Test(expectedExceptions = BadRequestException.class)
+	@Test(expectedExceptions = ClientErrorException.class) // HTTP 413 Request Entity Too Large
 	public void addPolicyWithTooBigDescription()
 	{
 		final char[] chars = new char[XML_MAX_TEXT_LENGTH + 1];
@@ -199,7 +199,7 @@ public class SecurityDemoTest extends RestServiceTest
 		testDomainHelper.resetPdpAndPrp();
 
 		// add refPolicies
-		final JAXBElement<PolicySet> refPolicySet = testDomainHelper.unmarshalXacml(new File(RestServiceTest.XACML_SAMPLES_DIR, "PolicyReference.TooDeep/refPolicies/invalid-pps-employee.xml"),
+		final JAXBElement<PolicySet> refPolicySet = testDomainHelper.unmarshalXacml(new File(RestServiceTest.XACML_SAMPLES_DIR, "PolicyReference.TooDeep/refPolicies/pps-employee.xml"),
 				PolicySet.class);
 		testDomainHelper.testAddAndGetPolicy(refPolicySet.getValue());
 		final JAXBElement<PolicySet> refPolicySet2 = testDomainHelper.unmarshalXacml(new File(RestServiceTest.XACML_SAMPLES_DIR, "PolicyReference.TooDeep/refPolicies/pps-manager.xml"),

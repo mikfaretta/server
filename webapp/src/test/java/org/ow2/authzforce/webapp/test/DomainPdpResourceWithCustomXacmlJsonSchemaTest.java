@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2024 THALES.
+ * Copyright (C) 2012-2026 THALES.
  *
  * This file is part of AuthzForce CE.
  *
@@ -105,6 +105,9 @@ public class DomainPdpResourceWithCustomXacmlJsonSchemaTest extends RestServiceT
 	@DataProvider
 	public Object[][] getData(ITestContext context) {
 		String xacmlTestDirsParameter = context.getCurrentXmlTest().getLocalParameters().get("xacmlTestDirs");
+		//DEBUG
+		System.out.println("DEBUG!!!!!!!!!!!!!!!!!!!!!! " + context.getCurrentXmlTest());
+		// END DEBUG
 		String[] xacmlTestDirRelativePaths = xacmlTestDirsParameter.split(",");
 		String customDatatypeParameter = context.getCurrentXmlTest().getLocalParameters().get("customDatatype");
 		Object[][] returnValues = new Object[xacmlTestDirRelativePaths.length][2];

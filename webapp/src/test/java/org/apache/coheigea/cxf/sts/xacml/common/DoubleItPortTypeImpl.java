@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2024 THALES.
+ * Copyright (C) 2012-2026 THALES.
  *
  * This file is part of AuthzForce CE.
  *
@@ -31,7 +31,7 @@ import org.junit.Assert;
 @WebService(targetNamespace = "http://www.example.org/contract/DoubleIt", 
             serviceName = "DoubleItService", 
             endpointInterface = "org.example.contract.doubleit.DoubleItPortType")
-@Features(features = "org.apache.cxf.feature.LoggingFeature")              
+@Features(features = "org.apache.cxf.ext.logging.LoggingFeature")
 public class DoubleItPortTypeImpl implements DoubleItPortType {
     
     @Resource

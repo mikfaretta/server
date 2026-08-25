@@ -248,8 +248,16 @@ public class JSONProvider<T> extends AbstractJAXBProvider<T>
 
 	}
 
+	/**
+	 * Factory for XML-to-JSON writer based on "mapped" convention
+	 */
 	protected final class MappedConventionBasedXmlToJsonStreamWriterFactory implements XmlToJsonStreamWriterFactory
 	{
+		/**
+		 * Default constructor
+		 */
+		protected MappedConventionBasedXmlToJsonStreamWriterFactory() {}
+
 		/**
 		 * Adapted from original CXF JSONProvider's method createWriter()
 		 */
@@ -330,8 +338,20 @@ public class JSONProvider<T> extends AbstractJAXBProvider<T>
 		}
 	}
 
+	/**
+	 * JSON-to-XML stream reader factory following the "mapped" convention
+	 */
 	protected JsonToXmlStreamReaderFactory jsonToXmlStreamReaderFactory = MAPPED_CONVENTION_BASED_JSON_TO_XML_STREAM_READER_FACTORY;
+
+	/**
+	 * JSON-to-XML stream writer factory following the "mapped" convention
+	 */
 	protected XmlToJsonStreamWriterFactory xmlToJsonStreamWriterFactory = new MappedConventionBasedXmlToJsonStreamWriterFactory();
+
+	/**
+	 * Default constructor
+	 */
+	public JSONProvider() {}
 
 	/**
 	 * END CHANGE to {@link JSONProvider}
@@ -346,16 +366,29 @@ public class JSONProvider<T> extends AbstractJAXBProvider<T>
 	/*
 	 * BEGIN CHANGE to transform input elements (JSON keys without '@') to attributes, i.e. the opposite of attributesToElements, and to transform the attributes themselves
 	 */
+
+	/**
+	 * Set the Jettison elementsToAttributes property
+	 * @param keys property value
+	 */
 	public void setElementsToAttributes(final List<String> keys)
 	{
 		this.elementsToAttributes = keys;
 	}
 
+	/**
+	 * Set the Jettison outTransformAttributes property
+	 * @param attributesMap property value
+	 */
 	public void setOutTransformAttributes(final Map<String, String> attributesMap)
 	{
 		this.outAttributesMap = attributesMap;
 	}
 
+	/**
+	 * Set the Jettison inTransformAttributes property
+	 * @param attributesMap property value
+	 */
 	public void setInTransformAttributes(final Map<String, String> attributesMap)
 	{
 		this.inAttributesMap = attributesMap;
@@ -367,6 +400,11 @@ public class JSONProvider<T> extends AbstractJAXBProvider<T>
 
 	/*
 	 * BEGIN CHANGE to pre-instantiate the proper stream reader/writer factory depending on convention
+	 */
+
+	/**
+	 * Set the Jettison convention
+	 * @param value convention
 	 */
 	public void setConvention(final String value)
 	{
@@ -390,6 +428,10 @@ public class JSONProvider<T> extends AbstractJAXBProvider<T>
 	 * END CHANGE
 	 */
 
+	/**
+	 * Set the convert-types-to-strings property
+	 * @param convert property value
+	 */
 	public void setConvertTypesToStrings(final boolean convert)
 	{
 		if (convert)
@@ -398,57 +440,101 @@ public class JSONProvider<T> extends AbstractJAXBProvider<T>
 		}
 	}
 
+	/**
+	 * Set the type converter
+	 * @param converter converter
+	 */
 	public void setTypeConverter(final TypeConverter converter)
 	{
 		this.typeConverter = converter;
 	}
 
+	/**
+	 * Set ignore-namespaces property
+	 * @param ignoreNamespaces property value
+	 */
 	public void setIgnoreNamespaces(final boolean ignoreNamespaces)
 	{
 		this.ignoreNamespaces = ignoreNamespaces;
 	}
 
+	/**
+	 * Set the message context
+	 * @param mc context
+	 */
 	@Context
 	public void setMessageContext(final MessageContext mc)
 	{
 		super.setContext(mc);
 	}
 
+	/**
+	 * Set the Jettison drop-root-element property
+	 * @param drop property value
+	 */
 	public void setDropRootElement(final boolean drop)
 	{
 		this.dropRootElement = drop;
 	}
 
+	/**
+	 * Set the Jettison dropCollectionWrapperElement property
+	 * @param drop property value
+	 */
 	public void setDropCollectionWrapperElement(final boolean drop)
 	{
 		this.dropCollectionWrapperElement = drop;
 	}
 
+	/**
+	 * Set the Jettison ignoreMixedContent property
+	 * @param ignore property value
+	 */
 	public void setIgnoreMixedContent(final boolean ignore)
 	{
 		this.ignoreMixedContent = ignore;
 	}
 
+	/**
+	 * Set the Jettison supportUnwrapped property
+	 * @param unwrap property value
+	 */
 	public void setSupportUnwrapped(final boolean unwrap)
 	{
 		this.unwrapped = unwrap;
 	}
 
+	/**
+	 * Set the Jettison wrapperName property
+	 * @param wName property value
+	 */
 	public void setWrapperName(final String wName)
 	{
 		wrapperName = wName;
 	}
 
+	/**
+	 * Set the Jettison wrapperMap property
+	 * @param map property value
+	 */
 	public void setWrapperMap(final Map<String, String> map)
 	{
 		wrapperMap = map;
 	}
 
+	/**
+	 * Set the Jettison serializAsArray property
+	 * @param asArray property value
+	 */
 	public void setSerializeAsArray(final boolean asArray)
 	{
 		this.serializeAsArray = asArray;
 	}
 
+	/**
+	 * Set the Jettison arrayKeys property
+	 * @param keys property value
+	 */
 	public void setArrayKeys(final List<String> keys)
 	{
 		this.arrayKeys = keys;
@@ -456,6 +542,11 @@ public class JSONProvider<T> extends AbstractJAXBProvider<T>
 
 	/*
 	 * BEGIN CHANGE to validate namespace URI and prefixes in namespaceMap property, and to support xsi:type (i.e.g XMLSchema-instance namespace for inheritance) equivalent for JSON
+	 */
+
+	/**
+	 * Set the XML-namespace-to-JSON-prefix mappings
+	 * @param namespaceMap mappings
 	 */
 	public void setNamespaceMap(final Map<String, String> namespaceMap)
 	{
@@ -601,6 +692,14 @@ public class JSONProvider<T> extends AbstractJAXBProvider<T>
 		return null;
 	}
 
+	/**
+	 * Create XML reader
+	 * @param is inputstream
+	 * @param isCollection is the input a collection?
+	 * @param enc encoding
+	 * @return the reader
+	 * @throws Exception error
+	 */
 	protected XMLStreamReader createReader(/* final Class<?> type, */final InputStream is, final boolean isCollection, final String enc) throws Exception
 	{
 		final XMLStreamReader reader = createReader(/* type, */is, enc);
@@ -610,10 +709,14 @@ public class JSONProvider<T> extends AbstractJAXBProvider<T>
 	/**
 	 * Reason for changing original org.apache.cxf.jaxrs.provider.json.JSONProvider#createReader(Class,InputStream,String):
 	 * <ol>
-	 * <li>Prevent use of depthProperties with badgerfish convention (not supported). More info: http://cxf.547215.n5.nabble.com/No-JSON-depth-control-with-Badgerfish -td5776211.html</li>
+	 * <li>Prevent use of depthProperties with badgerfish convention (not supported). More info: <a href="http://cxf.547215.n5.nabble.com/No-JSON-depth-control-with-Badgerfish-td5776211.html">No JSON depth control with Badgerfish</a></li>
 	 * <li>Support innerElementLevelThreshold (only innerElementCount is supported by CXF JSONProvider as shown by method JSONUtils$JettisonMappedReaderFactory#createNewJSONTokener() ) and max string
 	 * length (similar to org.apache.cxf.stax.maxAttributeSize/maxTextLength for XML).</li>
 	 * </ol>
+	 * @param is input stream
+	 * @param enc encoding
+	 * @return XML reader
+	 * @throws Exception error
 	 */
 	protected XMLStreamReader createReader(/* final Class<?> type, */final InputStream is, final String enc) throws Exception
 	{
@@ -634,6 +737,14 @@ public class JSONProvider<T> extends AbstractJAXBProvider<T>
 		return reader;
 	}
 
+	/**
+	 * Wrap an inputstream in another
+	 * @param cls JAXB class
+	 * @param type generic type
+	 * @param is original inputstream
+	 * @return wrapped inputstream
+	 * @throws Exception error
+	 */
 	protected InputStream getInputStream(final Class<T> cls, final Type type, final InputStream is) throws Exception
 	{
 		if (unwrapped)
@@ -668,6 +779,13 @@ public class JSONProvider<T> extends AbstractJAXBProvider<T>
 
 	}
 
+	/**
+	 * Get the root JSON property name corresponding to a JAXB object
+	 * @param cls JAXB class
+	 * @param type parameter type
+	 * @return root name
+	 * @throws Exception error
+	 */
 	protected String getRootName(final Class<T> cls, final Type type) throws Exception
 	{
 		String name = null;
@@ -780,6 +898,12 @@ public class JSONProvider<T> extends AbstractJAXBProvider<T>
 	 * END CHANGE
 	 */
 
+	/**
+	 * Copy reader input to writer
+	 * @param reader XML reader
+	 * @param writer XML writer
+	 * @throws Exception error
+	 */
 	protected static void copyReaderToWriter(final XMLStreamReader reader, final XMLStreamWriter writer) throws Exception
 	{
 		writer.writeStartDocument();
@@ -787,6 +911,16 @@ public class JSONProvider<T> extends AbstractJAXBProvider<T>
 		writer.writeEndDocument();
 	}
 
+	/**
+	 * Marshal a collection
+	 * @param originalCls collection type
+	 * @param collection collection
+	 * @param genericType collection item type
+	 * @param encoding encoding
+	 * @param os output stream
+	 * @param anns annotations
+	 * @throws Exception error
+	 */
 	protected void marshalCollection(final Class<?> originalCls, final Object collection, final Type genericType, final String encoding, final OutputStream os, /* final MediaType m, */
 			final Annotation[] anns) throws Exception
 	{
@@ -860,6 +994,15 @@ public class JSONProvider<T> extends AbstractJAXBProvider<T>
 		os.write(endTag.getBytes());
 	}
 
+	/**
+	 * Marshal a collection member
+	 * @param cls collection type
+	 * @param obj collection member
+	 * @param genericType collection item type
+	 * @param enc encoding
+	 * @param os output stream
+	 * @throws Exception error
+	 */
 	protected void marshalCollectionMember(final Object obj, final Class<?> cls, final Type genericType, final String enc, final OutputStream os) throws Exception
 	{
 		final Object actualObject;
@@ -902,6 +1045,17 @@ public class JSONProvider<T> extends AbstractJAXBProvider<T>
 		writer.close();
 	}
 
+	/**
+	 * Marshal a JAXB element
+	 * @param actualObject JAXB object
+	 * @param actualClass JAXB class
+	 * @param genericType collection item type if it is a collection
+	 * @param ms marshaller
+	 * @param enc encoding
+	 * @param os output stream
+	 * @param isCollection true iff the marshalled object is a collection
+	 * @throws Exception error
+	 */
 	protected void marshal(final Marshaller ms, final Object actualObject, final Class<?> actualClass, final Type genericType, final String enc, final OutputStream os, final boolean isCollection)
 			throws Exception
 	{
@@ -934,6 +1088,10 @@ public class JSONProvider<T> extends AbstractJAXBProvider<T>
 	 * BEGIN CHANGE createWriter() method removed here from original JSONProvider class, moved to new XmlToJsonStreamWriterFactory#createWriter() so to speak END CHANGE
 	 */
 
+	/**
+	 * Get the arrayKeys property from the message context
+	 * @return property value
+	 */
 	protected List<String> getArrayKeys()
 	{
 		final MessageContext mc = getContext();
@@ -948,11 +1106,22 @@ public class JSONProvider<T> extends AbstractJAXBProvider<T>
 		return arrayKeys;
 	}
 
+	/**
+	 * Get the "json.root.is.array" property from the message context
+	 * @param theArrayKeys elements mapped to JSON arrays
+	 * @return property value
+	 */
 	protected boolean isRootArray(final List<String> theArrayKeys)
 	{
 		return theArrayKeys != null || getBooleanJsonProperty(ROOT_IS_ARRAY_PROPERTY, serializeAsArray);
 	}
 
+	/**
+	 * Get a boolean property from the message context
+	 * @param name property name
+	 * @param defaultValue default property value
+	 * @return the final property value
+	 */
 	protected boolean getBooleanJsonProperty(final String name, final boolean defaultValue)
 	{
 		final MessageContext mc = getContext();
@@ -967,6 +1136,15 @@ public class JSONProvider<T> extends AbstractJAXBProvider<T>
 		return defaultValue;
 	}
 
+	/**
+	 * Marshall a JAXB object to JSON
+	 * @param actualObject JAXB object
+	 * @param actualClass JAXB class
+	 * @param genericType type parameter if the JAXB class is generic
+	 * @param enc encoding
+	 * @param os output stream
+	 * @throws Exception error
+	 */
 	protected void marshal(final Object actualObject, final Class<?> actualClass, final Type genericType, final String enc, final OutputStream os) throws Exception
 	{
 
@@ -1002,31 +1180,55 @@ public class JSONProvider<T> extends AbstractJAXBProvider<T>
 		return prefix == null ? "" : prefix;
 	}
 
+	/**
+	 * Write the XSI type
+	 * @param writeXsiType true to enable
+	 */
 	public void setWriteXsiType(final boolean writeXsiType)
 	{
 		this.writeXsiType = writeXsiType;
 	}
 
+	/**
+	 * Read the XSI type
+	 * @param readXsiType true to enable
+	 */
 	public void setReadXsiType(final boolean readXsiType)
 	{
 		this.readXsiType = readXsiType;
 	}
 
+	/**
+	 * Set the Jettison primitiveArrayKeys property
+	 * @param primitiveArrayKeys property value
+	 */
 	public void setPrimitiveArrayKeys(final List<String> primitiveArrayKeys)
 	{
 		this.primitiveArrayKeys = primitiveArrayKeys;
 	}
 
+	/**
+	 * Enable dropping elements in the XML stream
+	 * @param drop true to enable
+	 */
 	public void setDropElementsInXmlStream(final boolean drop)
 	{
 		this.dropElementsInXmlStream = drop;
 	}
 
+	/**
+	 * Set the Jettison writeNullAsString property
+	 * @param writeNullAsString property value
+	 */
 	public void setWriteNullAsString(final boolean writeNullAsString)
 	{
 		this.writeNullAsString = writeNullAsString;
 	}
 
+	/**
+	 * Set the Jettison ignoreEmptyArrayElements property
+	 * @param ignoreEmptyArrayElements property value
+	 */
 	public void setIgnoreEmptyArrayValues(final boolean ignoreEmptyArrayElements)
 	{
 		this.ignoreEmptyArrayValues = ignoreEmptyArrayElements;
@@ -1063,11 +1265,19 @@ public class JSONProvider<T> extends AbstractJAXBProvider<T>
 		return null;
 	}
 
+	/**
+	 * Set the escapeForwardSlashesAlways property
+	 * @param escape true to enable
+	 */
 	public void setEscapeForwardSlashesAlways(final boolean escape)
 	{
 		this.escapeForwardSlashesAlways = escape;
 	}
 
+	/**
+	 * Set the namespace separator
+	 * @param namespaceSeparator separator
+	 */
 	public void setNamespaceSeparator(final String namespaceSeparator)
 	{
 		this.namespaceSeparator = namespaceSeparator;

@@ -27,18 +27,23 @@
    <!-- Path to JSON schema file for XACML JSON Profile's Request validation, relative to #{jndi_configDir} (if undefined, the Request.schema.json from authzforce-ce-xacml-json-model project is used by default) -->
    <jee:jndi-lookup id="jndi_xacmlJsonSchemaRelativePath" jndi-name="org.ow2.authzforce.domains.xacmlJsonSchemaRelativePath" expected-type="java.lang.String" default-value="" />
 
-   <!-- XML security properties used to set the corresponding JAXRS server pproperties defined in the doc: http://cxf.apache.org/docs/security.html, for "Controlling Large Request Payloads" and mitigate 
-      XML DoS attacks (since CXF 2.7.4). You should not try to set them via system properties (this does not work as expected). If you comment out this environment entry or specify a negative value, CXF default 
-      value is used. -->
-   <jee:jndi-lookup id="jndi_staxMaxChildElements" jndi-name="org.apache.cxf.stax.maxChildElements" expected-type="java.lang.Integer" default-value="#{T(java.lang.Integer).valueOf(-1)}" />
-   <jee:jndi-lookup id="jndi_staxMaxElementDepth" jndi-name="org.apache.cxf.stax.maxElementDepth" expected-type="java.lang.Integer" default-value="#{T(java.lang.Integer).valueOf(-1)}" />
+   <!-- XML security properties used to set the corresponding JAXRS server properties defined in the doc: https://cxf.apache.org/docs/securing-cxf-services.html#SecuringCXFServices-XML, for "Controlling Large Request Payloads" and mitigate
+      XML DoS attacks (since CXF 2.7.4). You should not try to set them via system properties (this does not work as expected).
+      These properties accept only strictly positive values. Default values are the same as CXF (cf. previous link).
+      The properties 'org.apache.cxf.stax.maxChildElements', 'org.apache.cxf.stax.maxElementDepth' and 'org.apache.cxf.stax.maxTextLength' also apply to the JSON parser to limit the number of properties/items of a JSON object/array, the depth of a JSON object properties and the size of JSON
+      strings respectively.
+      -->
+   <jee:jndi-lookup id="jndi_staxMaxChildElements" jndi-name="org.apache.cxf.stax.maxChildElements" expected-type="java.lang.Integer" default-value="50000" />
+   <jee:jndi-lookup id="jndi_staxMaxElementDepth" jndi-name="org.apache.cxf.stax.maxElementDepth" expected-type="java.lang.Integer" default-value="100" />
    <!-- WARNING: the properties below (maxAttributeSize/maxTextLength) are not compatible with FastInfoset (you will get: ClassCastException: com.sun.xml.fastinfoset.stax.StAXDocumentParser cannot be cast 
       to org.codehaus.stax2.XMLStreamReader2) because they require Woodstox parser (4.2+) which Sun's FastInfoset parser used here is not. See https://issues.apache.org/jira/browse/CXF-6848: Daniel Kulp: "FastInfoset 
       does not provide any means to enforce any of those security requirements." NB: CXF doc is misleading as it makes believe you can use shortcut strings like '64K' or '128M' but you can't. For maxAttributeSize 
-      = 100 in JAXRS server configuration, exception raised only when chars.length > 181! WHY? Possible issue with woodstox library. FIXME: report this issue to CXF/Woodstox. -->
-   <jee:jndi-lookup id="jndi_staxMaxAttributeCount" jndi-name="org.apache.cxf.stax.maxAttributeCount" expected-type="java.lang.Integer" default-value="#{T(java.lang.Integer).valueOf(-1)}" />
-   <jee:jndi-lookup id="jndi_staxMaxAttributeSize" jndi-name="org.apache.cxf.stax.maxAttributeSize" expected-type="java.lang.Integer" default-value="#{T(java.lang.Integer).valueOf(-1)}" />
-   <jee:jndi-lookup id="jndi_staxMaxTextLength" jndi-name="org.apache.cxf.stax.maxTextLength" expected-type="java.lang.Integer" default-value="#{T(java.lang.Integer).valueOf(-1)}" />
+      = 100 in JAXRS server configuration, exception raised only when chars.length > 181! WHY? Possible issue with woodstox library. FIXME: report this issue to CXF/Woodstox.
+      -->
+   <jee:jndi-lookup id="jndi_staxMaxAttributeCount" jndi-name="org.apache.cxf.stax.maxAttributeCount" expected-type="java.lang.Integer" default-value="500" />
+   <jee:jndi-lookup id="jndi_staxMaxAttributeSize" jndi-name="org.apache.cxf.stax.maxAttributeSize" expected-type="java.lang.Integer" default-value="65536" /><!-- 64K -->
+   <jee:jndi-lookup id="jndi_staxMaxTextLength" jndi-name="org.apache.cxf.stax.maxTextLength" expected-type="java.lang.Integer" default-value="134217728" /><!-- 128M -->
+
    <!-- jaxrs:server's publishedEndpointUrl value (empty string is equivalent to undefined/default behavior in which case Apache CXF framework computes the URL as usual) -->
    <jee:jndi-lookup id="jndi_publishedEndpointUrl" jndi-name="org.ow2.authzforce.webapp.publishedEndpointUrl" expected-type="java.lang.String" default-value="" />
    <!-- Comma-separated list of keys of JSON fields to deserialize to JAXB/XML attributes from JSON input -->
@@ -126,7 +131,7 @@
             <ref bean="domainsResourceBean" />
          </jaxrs:serviceBeans>
          <jaxrs:features>
-			<core:logging />
+            <bean class="org.apache.cxf.ext.logging.LoggingFeature"/>
 		</jaxrs:features>
          <jaxrs:providers>
             <bean class="org.ow2.authzforce.jaxrs.util.AcceptMediaTypeCheckingRequestFilter">
@@ -158,9 +163,9 @@
                <constructor-arg
                        name="schema"
                        value="#{ jndi_xacmlJsonSchemaRelativePath.length() == 0? T(org.ow2.authzforce.xacml.json.model.XacmlJsonUtils).REQUEST_SCHEMA: T(org.ow2.authzforce.webapp.JsonRiCxfJaxrsProvider).loadSchema(jndi_configDir + '/' + jndi_xacmlJsonSchemaRelativePath) }" />
-               <!-- Only innerElementCountThreshold, innerElementLevelThreshold and maxTextLength/maxAttributeSize are supported. If one of them is negative or zero, all these properties are ignored -->
+               <!-- Only jndi_staxMaxChildElements, jndi_staxMaxElementDepth and jndi_staxMaxTextLength are supported. Strictly positive values required. -->
                <constructor-arg name="maxJsonStringSize"
-                  value="#{jndi_staxMaxAttributeSize &lt;= 0 ? jndi_staxMaxTextLength: (jndi_staxMaxTextLength &lt;= 0 ? jndi_staxMaxAttributeSize: T(java.lang.Math).min(jndi_staxMaxAttributeSize,jndi_staxMaxTextLength) ) }" />
+                  value="#{jndi_staxMaxTextLength}" />
                <constructor-arg name="maxNumOfImmediateChildren" value="#{jndi_staxMaxChildElements}" />
                <constructor-arg name="maxDepth" value="#{jndi_staxMaxElementDepth}" />
                <property name="produceMediaTypes" ref="xacmlJsonMediaTypes" />

@@ -53,13 +53,26 @@ import org.ow2.authzforce.webapp.org.codehaus.jettison.mapped.MappedNamespaceCon
 import org.ow2.authzforce.webapp.org.codehaus.jettison.mapped.MappedXMLInputFactory;
 import org.ow2.authzforce.webapp.org.codehaus.jettison.mapped.MappedXMLStreamWriter;
 
+/**
+ * JSON-to/from-XML transformation utilities
+ */
 public final class JSONUtils
 {
+	/**
+	 * XSI namespace prefix
+	 */
 	public static final String XSI_PREFIX = "xsi";
+
+	/**
+	 * XSI namespace URI
+	 */
 	public static final String XSI_URI = "http://www.w3.org/2001/XMLSchema-instance";
 
 	/*
 	 * BEGIN CHANGE to FIX ISSUE "Undeclared prefix 'tns'", when validating XML schema on @xsi:type="tns:MyType". Constant used in fix of MappedNamespaceConvention
+	 */
+	/**
+	 * XSI type QName
 	 */
 	public static final QName XSI_TYPE_QNAME = new QName(XSI_URI, "type");
 
@@ -71,12 +84,26 @@ public final class JSONUtils
 	{
 	}
 
+	/**
+	 * Create BadgerFish writer
+	 * @param os outputstream
+	 * @param enc encoding
+	 * @return XML stream writer
+	 * @throws XMLStreamException error
+	 */
 	public static XMLStreamWriter createBadgerFishWriter(final OutputStream os, final String enc) throws XMLStreamException
 	{
 		final XMLOutputFactory factory = new BadgerFishXMLOutputFactory();
 		return factory.createXMLStreamWriter(os, enc);
 	}
 
+	/**
+	 * Create Badgerfish reader
+	 * @param is input stream
+	 * @param enc encoding
+	 * @return reader
+	 * @throws XMLStreamException error
+	 */
 	public static XMLStreamReader createBadgerFishReader(final InputStream is, final String enc) throws XMLStreamException
 	{
 		final XMLInputFactory factory = new BadgerFishXMLInputFactory();
@@ -84,6 +111,20 @@ public final class JSONUtils
 	}
 
 	// CHECKSTYLE:OFF
+
+	/**
+	 * Create XML stream writer
+	 * @param os output stream
+	 * @param qname QName
+	 * @param writeXsiType enable writing the XSI type
+	 * @param config configuration
+	 * @param serializeAsArray serialize as a JSON array
+	 * @param arrayKeys array keys
+	 * @param dropRootElement drop the root element
+	 * @param enc encoding
+	 * @return XML writer
+	 * @throws Exception error
+	 */
 	public static XMLStreamWriter createStreamWriter(final OutputStream os, final QName qname, final boolean writeXsiType, final Configuration config, final boolean serializeAsArray,
 			final List<String> arrayKeys, final boolean dropRootElement, final String enc) throws Exception
 	{
@@ -109,6 +150,14 @@ public final class JSONUtils
 		return !writeXsiType || dropRootElement ? new IgnoreContentJettisonWriter(xsw, writeXsiType, dropRootElement) : xsw;
 	}
 
+	/**
+	 * Create a Jettison mapping configuration
+	 * @param namespaceMap XML-namespace-to-JSON-prefix mapping
+	 * @param writeXsiType write XSI types
+	 * @param attributesAsElements convert attributes like elements
+	 * @param converter type converter
+	 * @return configuration
+	 */
 	public static Configuration createConfiguration(final ConcurrentHashMap<String, String> namespaceMap, final boolean writeXsiType, final boolean attributesAsElements, final TypeConverter converter)
 	{
 		if (writeXsiType)
@@ -124,11 +173,24 @@ public final class JSONUtils
 		return c;
 	}
 
+	/**
+	 * Create mixed-content-ignoring XML stream writer
+	 * @param writer input writer
+	 * @param ignoreMixedContent whether to ignore mixed content or not
+	 * @return new writer
+	 */
 	public static XMLStreamWriter createIgnoreMixedContentWriterIfNeeded(final XMLStreamWriter writer, final boolean ignoreMixedContent)
 	{
 		return ignoreMixedContent ? new IgnoreMixedContentWriter(writer) : writer;
 	}
 
+	/**
+	 * Create namespace-unaware XML stream writer
+	 * @param writer namespace-aware writer
+	 * @param ignoreNamespaces whether to ignore namespaces or not
+	 * @param ignoreXsiAttributes whether to ignore XSI attributes or not
+	 * @return new writer
+	 */
 	public static XMLStreamWriter createIgnoreNsWriterIfNeeded(final XMLStreamWriter writer, final boolean ignoreNamespaces, final boolean ignoreXsiAttributes)
 	{
 		return ignoreNamespaces ? new IgnoreNamespacesWriter(writer, ignoreXsiAttributes) : writer;
@@ -140,11 +202,31 @@ public final class JSONUtils
 
 	}
 
+	/**
+	 * Create XML stream reader
+	 * @param is input stream
+	 * @param readXsiType read XSI types
+	 * @param namespaceMap XML-namespace-to-JSON-prefix mapping
+	 * @return XML reader
+	 * @throws Exception error
+	 */
 	public static XMLStreamReader createStreamReader(final InputStream is, final boolean readXsiType, final ConcurrentHashMap<String, String> namespaceMap) throws Exception
 	{
 		return createStreamReader(is, readXsiType, namespaceMap, null, null, null, StandardCharsets.UTF_8.name());
 	}
 
+	/**
+	 * Create XML stream reader
+	 * @param is input stream
+	 * @param readXsiType read XSI type
+	 * @param namespaceMap XML-namespace-to-JSON-prefix mapping
+	 * @param namespaceSeparator namespace separator
+	 * @param primitiveArrayKeys primitiveArrayKeys Jettison property
+	 * @param depthProps JSON depth limits
+	 * @param enc encoding
+	 * @return XML reader
+	 * @throws Exception error
+	 */
 	public static XMLStreamReader createStreamReader(final InputStream is, final boolean readXsiType, final ConcurrentHashMap<String, String> namespaceMap, final String namespaceSeparator,
 			final List<String> primitiveArrayKeys, final DocumentDepthProperties depthProps, final String enc) throws Exception
 	{
@@ -186,10 +268,19 @@ public final class JSONUtils
 	/*
 	 * BEGIN CHANGE to CXF 3.1.8: changed the visibility of this class and constructor to allow usage from org.ow2.authzforce.webapp.org.apache.cxf.jaxrs.provider.json.JSONProvider
 	 */
+
+	/**
+	 * Jettison reader
+	 */
 	public static class JettisonReader extends DepthXMLStreamReader
 	{
 		private final Map<String, String> namespaceMap;
 
+		/**
+		 * Constructor
+		 * @param nsMap XML-namespace-to-JSON-prefix mappings
+		 * @param reader XML reader
+		 */
 		public JettisonReader(final Map<String, String> nsMap, final XMLStreamReader reader)
 		{
 			/*

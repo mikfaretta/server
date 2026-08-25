@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2024 THALES.
+ * Copyright (C) 2012-2026 THALES.
  *
  * This file is part of AuthzForce CE.
  *
@@ -41,7 +41,7 @@ import org.w3._2005.atom.Relation;
  * Policy Resource implementation. Each policy managed by {@link DomainResourceImpl} is an instance of this class.
  *
  */
-public class PolicyResourceImpl implements PolicyDaoClient, PolicyResource
+public final class PolicyResourceImpl implements PolicyDaoClient, PolicyResource
 {
 	private static final String LATEST_VERSION_ID = "latest";
 	private static final NotFoundException NOT_FOUND_EXCEPTION = new NotFoundException();

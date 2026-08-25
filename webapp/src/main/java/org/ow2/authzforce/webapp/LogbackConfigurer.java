@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2024 THALES.
+ * Copyright (C) 2012-2026 THALES.
  *
  * This file is part of AuthzForce CE.
  *
@@ -47,11 +47,11 @@ import java.net.URL;
 
 /**
  * Convenience class that features simple methods for custom Log4J configuration.
- * <p/>
+ * <p>
  * Only needed for non-default Logback initialization with a custom
  * config location. By default, Logback will simply read its
  * configuration from a "logback.xml" or "logback_test.xml" file in the root of the classpath.
- * <p/>
+ * <p>
  * For web environments, the analogous LogbackWebConfigurer class can be found
  * in the web package, reading in its configuration from context-params in web.xml.
  * In a JEE web application, Logback is usually set up via LogbackConfigListener or
@@ -95,7 +95,7 @@ public class LogbackConfigurer {
 
     /**
      * Set the specified system property to the current working directory.
-     * <p/>
+     * <p>
      * This can be used e.g. for test environments, for applications that leverage
      * LogbackWebConfigurer's "webAppRootKey" support in a web environment.
      *
@@ -108,7 +108,7 @@ public class LogbackConfigurer {
 
     /**
      * Shut down Logback.
-     * <p/>
+     * <p>
      * This isn't strictly necessary, but recommended for shutting down
      * logback in a scenario where the host VM stays alive (for example, when
      * shutting down an application in a J2EE environment).

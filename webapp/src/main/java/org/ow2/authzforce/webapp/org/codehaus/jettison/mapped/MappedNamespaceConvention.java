@@ -64,12 +64,19 @@ public class MappedNamespaceConvention implements Convention, NamespaceContext
 	private String jsonNamespaceSeparator;
 	private Set<String> elementsAsAttributes;
 
+	/**
+	 * Default constructor
+	 */
 	public MappedNamespaceConvention()
 	{
 		super();
 		typeConverter = Configuration.newDefaultConverterInstance();
 	}
 
+	/**
+	 * Constructor from configuration
+	 * @param config configuration
+	 */
 	public MappedNamespaceConvention(final Configuration config)
 	{
 		super();
@@ -339,6 +346,13 @@ public class MappedNamespaceConvention implements Convention, NamespaceContext
 		return qname;
 	}
 
+	/**
+	 * create a JSON property name (key) for an XML attribute
+	 * @param p prefix
+	 * @param ns namespace
+	 * @param local local name
+	 * @return JSON key
+	 */
 	public String createAttributeKey(final String p, final String ns, final String local)
 	{
 
@@ -376,6 +390,13 @@ public class MappedNamespaceConvention implements Convention, NamespaceContext
 		return jns;
 	}
 
+	/**
+	 * Create JSON property name for an XML element
+	 * @param p prefix
+	 * @param ns namespace
+	 * @param local local name
+	 * @return JSON key (property name)
+	 */
 	public String createKey(final String p, final String ns, final String local)
 	{
 
@@ -389,6 +410,13 @@ public class MappedNamespaceConvention implements Convention, NamespaceContext
 		return builder.append(local).toString();
 	}
 
+	/**
+	 * Is the XML node converted to JSON as attribute or element?
+	 * @param p prefix
+	 * @param ns namespace
+	 * @param local local name
+	 * @return true if converted as element
+	 */
 	public boolean isElement(final String p, final String ns, final String local)
 	{
 
@@ -409,52 +437,93 @@ public class MappedNamespaceConvention implements Convention, NamespaceContext
 		return false;
 	}
 
+	/**
+	 * Convert XML text to JSON primitive
+	 * @param text text
+	 * @return JSON scalar
+	 */
 	public Object convertToJSONPrimitive(final String text)
 	{
 
 		return typeConverter.convertToJSONPrimitive(text);
 	}
 
+	/**
+	 * Get the Jettison primitiveArrayKeys property value
+	 * @return property value
+	 */
 	public Set<?> getPrimitiveArrayKeys()
 	{
 		return primitiveArrayKeys;
 	}
 
+	/**
+	 * Get the Jettison dropRootElement property value
+	 * @return property value
+	 */
 	public boolean isDropRootElement()
 	{
 		return dropRootElement;
 	}
 
+	/**
+	 * Get the Jettison ignoredElements property value
+	 * @return property value
+	 */
 	public List<?> getIgnoredElements()
 	{
 		return ignoredElements;
 	}
 
+	/**
+	 * Get the Jettison writeNullAsString property value
+	 * @return property value
+	 */
 	public boolean isWriteNullAsString()
 	{
 		return writeNullAsString;
 	}
 
+	/**
+	 * Get the Jettison readNullAsString property value
+	 * @return property value
+	 */
 	public boolean isReadNullAsString()
 	{
 		return readNullAsString;
 	}
 
+	/**
+	 * Get the Jettison ignoreEmptyArrayValues property value
+	 * @return property value
+	 */
 	public boolean isIgnoreEmptyArrayValues()
 	{
 		return ignoreEmptyArrayValues;
 	}
 
+	/**
+	 * Get the Jettison escapeForwardSlashAlways property value
+	 * @return property value
+	 */
 	public boolean isEscapeForwardSlashAlways()
 	{
 		return escapeForwardSlashAlways;
 	}
 
+	/**
+	 * Set the Jettison escapeForwardSlashAlways property value
+	 * @param escapeForwardSlash property value
+	 */
 	public void setEscapeForwardSlashAlways(final boolean escapeForwardSlash)
 	{
 		this.escapeForwardSlashAlways = escapeForwardSlash;
 	}
 
+	/**
+	 * Get the Jettison primitiveArrayKeys property value
+	 * @return property value
+	 */
 	public String getNamespaceSeparator()
 	{
 		return jsonNamespaceSeparator == null ? DOT_NAMESPACE_SEP : jsonNamespaceSeparator;

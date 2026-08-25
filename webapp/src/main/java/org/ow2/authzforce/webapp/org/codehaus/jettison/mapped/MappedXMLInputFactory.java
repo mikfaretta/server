@@ -26,16 +26,27 @@ import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.codehaus.jettison.json.JSONTokener;
 
+/**
+ * Factory for XML input to be converted to JSON according to "mapped" convention
+ */
 public class MappedXMLInputFactory extends AbstractXMLInputFactory
 {
 
 	private final MappedNamespaceConvention convention;
 
+	/**
+	 * Constructor
+	 * @param nstojns XML-namespace-to-JSON-prefix mappings
+	 */
 	public MappedXMLInputFactory(final Map<String, String> nstojns)
 	{
 		this(new Configuration(nstojns));
 	}
 
+	/**
+	 * Constructor
+	 * @param config configuration
+	 */
 	public MappedXMLInputFactory(final Configuration config)
 	{
 		this.convention = new MappedNamespaceConvention(config);
@@ -63,6 +74,12 @@ public class MappedXMLInputFactory extends AbstractXMLInputFactory
 		}
 	}
 
+	/**
+	 * Create JSON object from tokener
+	 * @param tokener JSON tokener
+	 * @return JSON object
+	 * @throws JSONException error
+	 */
 	protected JSONObject createJSONObject(final JSONTokener tokener) throws JSONException
 	{
 		return new JSONObject(tokener);

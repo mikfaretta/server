@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2024 THALES.
+ * Copyright (C) 2012-2026 THALES.
  *
  * This file is part of AuthzForce CE.
  *
@@ -44,9 +44,15 @@ import java.util.Map;
 
 /**
  * {@link org.apache.cxf.jaxrs.provider.JAXBElementProvider} that collects all namespace declarations (prefix-URI mappings) on parsing input XML in order to pass it Saxon XPath evaluator when XPath is enabled and XPath expressions are used in XACML
+ * @param <T> Java type supported by the provider
  */
 public final class NamespaceCollectingCxfJAXBElementProvider<T> extends JAXBElementProvider<T>
 {
+    /**
+     * Default constructor
+     */
+    public NamespaceCollectingCxfJAXBElementProvider() {}
+
     private static final class XmlnsStreamFilter implements StreamFilter
     {
 

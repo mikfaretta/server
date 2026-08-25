@@ -25,12 +25,12 @@
    <test name="Test_PDPOnly:No.FastInfoset:No.JSON:No.AutoSync:No.VersionRolling:No.DoSMitigation:Yes" preserve-order="true" enabled="true">
       <!-- Test using default parameter values -->
       <classes>
+         <!-- 'invocation-numbers' attribute on include element not working as expected: https://github.com/cbeust/testng/issues/613 -->
          <class name="org.ow2.authzforce.webapp.test.RootResourcesTest">
             <methods>
                <include name="getWADL" />
                <include name="getDomainsWithoutAcceptHeader" />
                <include name="getDomainsWithBadAcceptHeader" />
-               <!-- 'invocation-numbers' attribute on include element not working as expected: https://github.com/cbeust/testng/issues/613 -->
                <include name="addAndGetDomain" />
                <include name="getDomains" />
                <include name="getDomain" />

@@ -28,6 +28,9 @@ import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.codehaus.jettison.util.FastStack;
 
+/**
+ * XML stream reader for XML-to-JSON conversion according to the "mapped" convention
+ */
 public class MappedXMLStreamReader extends AbstractXMLStreamReader
 {
 	private final FastStack nodes;
@@ -37,11 +40,24 @@ public class MappedXMLStreamReader extends AbstractXMLStreamReader
 	private final NamespaceContext ctx;
 	private int popArrayNodes;
 
+	/**
+	 * Constructor
+	 * @param obj input JSON
+	 * @throws JSONException JSON parsing error
+	 * @throws XMLStreamException XML parsing error
+	 */
 	public MappedXMLStreamReader(final JSONObject obj) throws JSONException, XMLStreamException
 	{
 		this(obj, new MappedNamespaceConvention());
 	}
 
+	/**
+	 * Constructor
+	 * @param obj input JSON
+	 * @param con namespace mapping convention
+	 * @throws JSONException JSON parsing error
+	 * @throws XMLStreamException XML parsing error
+	 */
 	public MappedXMLStreamReader(final JSONObject obj, final MappedNamespaceConvention con) throws JSONException, XMLStreamException
 	{
 		final String rootName = (String) obj.keys().next();
@@ -315,17 +331,30 @@ public class MappedXMLStreamReader extends AbstractXMLStreamReader
 		return currentValue;
 	}
 
+	/**
+	 * Set the JSON key for XML text values
+	 * @param valueKey the key
+	 */
 	public void setValueKey(final String valueKey)
 	{
 		this.valueKey = valueKey;
 	}
 
+	/**
+	 * Whether to convert to a JSON array
+	 * @param key XML element/JSON key
+	 * @return true if not
+	 */
 	public boolean isAvoidArraySpecificEvents(final String key)
 	{
 		final Set<?> keys = convention.getPrimitiveArrayKeys();
 		return keys != null && keys.contains(key);
 	}
 
+	/**
+	 * Get the namespace mapping convention
+	 * @return the convention
+	 */
 	public MappedNamespaceConvention getConvention()
 	{
 		return convention;

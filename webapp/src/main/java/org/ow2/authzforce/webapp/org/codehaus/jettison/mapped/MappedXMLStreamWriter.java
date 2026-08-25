@@ -28,10 +28,17 @@ import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
+/**
+ * XML stream writer for JSON-to-XML transformation according to the "mapped" convention
+ */
 public class MappedXMLStreamWriter extends AbstractXMLStreamWriter
 {
 	private static final String MIXED_CONTENT_VALUE_KEY = "$";
 	private final MappedNamespaceConvention convention;
+
+	/**
+	 * Base writer
+	 */
 	protected Writer writer;
 	private NamespaceContext namespaceContext;
 	/**
@@ -268,6 +275,11 @@ public class MappedXMLStreamWriter extends AbstractXMLStreamWriter
 		}
 	}
 
+	/**
+	 * Constructor
+	 * @param convention namespace mapping convetion
+	 * @param writer base writer
+	 */
 	public MappedXMLStreamWriter(final MappedNamespaceConvention convention, final Writer writer)
 	{
 		super();
@@ -293,11 +305,19 @@ public class MappedXMLStreamWriter extends AbstractXMLStreamWriter
 		this.namespaceContext = context;
 	}
 
+	/**
+	 * Get  theJSON key converted to Xml text
+	 * @return key
+	 */
 	public String getTextKey()
 	{
 		return valueKey;
 	}
 
+	/**
+	 * Set the JSON key converted to Xml text
+	 * @param valueKey key
+	 */
 	public void setValueKey(final String valueKey)
 	{
 		this.valueKey = valueKey;
@@ -484,6 +504,10 @@ public class MappedXMLStreamWriter extends AbstractXMLStreamWriter
 
 	}
 
+	/**
+	 * Get the namespace mapping convention
+	 * @return the convention
+	 */
 	public MappedNamespaceConvention getConvention()
 	{
 		return convention;
