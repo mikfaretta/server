@@ -106,18 +106,31 @@ public class Configuration
 
 	private TypeConverter typeConverter = converterFactory.newDefaultConverterInstance();
 
+	/**
+	 * Default constructor
+	 */
 	public Configuration()
 	{
 		super();
 		this.xmlToJsonNamespaces = new HashMap<>();
 	}
 
+	/**
+	 * Constructor from XML-namespace-to-JSON-prefix mappings
+	 * @param xmlToJsonNamespaces the mappings
+	 */
 	public Configuration(final Map<String, String> xmlToJsonNamespaces)
 	{
 		super();
 		this.xmlToJsonNamespaces = xmlToJsonNamespaces;
 	}
 
+	/**
+	 * Constructor
+	 * @param xmlToJsonNamespaces XML-namespace-to-JSON-prefix mappings
+	 * @param attributesAsElements XML attributes to be converted like elements (without '@' prefix in JSON)
+	 * @param ignoredElements XML elements ignored in XML-to-JSON conversion
+	 */
 	public Configuration(final Map<String, String> xmlToJsonNamespaces, final List<String> attributesAsElements, final List<String> ignoredElements)
 	{
 		super();
@@ -126,151 +139,271 @@ public class Configuration
 		this.ignoredElements = ignoredElements;
 	}
 
+	/**
+	 * Are namespaces ignored?
+	 * @return true iff they are
+	 */
 	public boolean isIgnoreNamespaces()
 	{
 		return ignoreNamespaces;
 	}
 
+	/**
+	 * Ignore namespaces
+	 * @param ignoreNamespaces true to ignore
+	 */
 	public void setIgnoreNamespaces(final boolean ignoreNamespaces)
 	{
 		this.ignoreNamespaces = ignoreNamespaces;
 	}
 
+	/**
+	 * Get the attributesAsElements property
+	 * @return the property value
+	 */
 	public List<String> getAttributesAsElements()
 	{
 		return attributesAsElements;
 	}
 
+	/**
+	 * Set the attributesAsElements property
+	 * @param attributesAsElements property value
+	 */
 	public void setAttributesAsElements(final List<String> attributesAsElements)
 	{
 		this.attributesAsElements = attributesAsElements;
 	}
 
+	/**
+	 * Get the ignored XML elements
+	 * @return the ignored elements
+	 */
 	public List<String> getIgnoredElements()
 	{
 		return ignoredElements;
 	}
 
+	/**
+	 * Set the ignored XML elements
+	 * @param ignoredElements ignored elements
+	 */
 	public void setIgnoredElements(final List<String> ignoredElements)
 	{
 		this.ignoredElements = ignoredElements;
 	}
 
+	/**
+	 * Get the XML-namespace-to-JSON-prefix mappings
+	 * @return the mappings
+	 */
 	public Map<String, String> getXmlToJsonNamespaces()
 	{
 		return xmlToJsonNamespaces;
 	}
 
+	/**
+	 * Set the ML-namespace-to-JSON-prefix mappings
+	 * @param xmlToJsonNamespaces mappings
+	 */
 	public void setXmlToJsonNamespaces(final Map<String, String> xmlToJsonNamespaces)
 	{
 		this.xmlToJsonNamespaces = xmlToJsonNamespaces;
 	}
 
+	/**
+	 * Get the type converter
+	 * @return type converter
+	 */
 	public TypeConverter getTypeConverter()
 	{
 		return typeConverter;
 	}
 
+	/**
+	 * Set the type converter
+	 * @param typeConverter type converter
+	 */
 	public void setTypeConverter(final TypeConverter typeConverter)
 	{
 		this.typeConverter = typeConverter;
 	}
 
+	/**
+	 * Is the '@' prefix suppressed from XML attributes converted to JSON?
+	 * @return true iff it is
+	 */
 	public boolean isSupressAtAttributes()
 	{
 		return this.suppressAtAttributes;
 	}
 
+	/**
+	 * Enable/Disable adding the '@' prefix before the XML attribute name in the JSON output
+	 * @param supressAtAttributes true iff disabled
+	 */
 	public void setSupressAtAttributes(final boolean supressAtAttributes)
 	{
 		this.suppressAtAttributes = supressAtAttributes;
 	}
 
+	/**
+	 * Get the prefix for XML attributes mapped to JSON. Default: at sign ('@').
+	 * @return the prefix
+	 */
 	public String getAttributeKey()
 	{
 		return this.attributeKey;
 	}
 
+	/**
+	 * Set the prefix for XML attributes mapped to JSON. Default: at sign ('@').
+	 * @param attributeKey the prefix
+	 */
 	public void setAttributeKey(final String attributeKey)
 	{
 		this.attributeKey = attributeKey;
 	}
 
+	/**
+	 * Create default type converter
+	 * @return converter instance
+	 */
 	static TypeConverter newDefaultConverterInstance()
 	{
 		return converterFactory.newDefaultConverterInstance();
 	}
 
+	/**
+	 * Get Jettison primitiveArrayKeys property
+	 * @return the property value
+	 */
 	public Set<String> getPrimitiveArrayKeys()
 	{
 		return primitiveArrayKeys;
 	}
 
+	/**
+	 * Set the Jettison primitiveArrayKeys property
+	 * @param primitiveArrayKeys the property value
+	 */
 	public void setPrimitiveArrayKeys(final Set<String> primitiveArrayKeys)
 	{
 		this.primitiveArrayKeys = primitiveArrayKeys;
 	}
 
+	/**
+	 * Is the root XML element dropped?
+	 * @return true iff dropped
+	 */
 	public boolean isDropRootElement()
 	{
 		return dropRootElement;
 	}
 
+	/**
+	 * Enable/disable dropping the root XML element
+	 * @param dropRootElement true iff enabled
+	 */
 	public void setDropRootElement(final boolean dropRootElement)
 	{
 		this.dropRootElement = dropRootElement;
 	}
 
+	/**
+	 * Is the Jettison writeNullAsString property true?
+	 * @return the property value
+	 */
 	public boolean isWriteNullAsString()
 	{
 		return writeNullAsString;
 	}
 
+	/**
+	 * Set the Jettison writeNullAsString property
+	 * @param writeNullAsString  the property value
+	 */
 	public void setWriteNullAsString(final boolean writeNullAsString)
 	{
 		this.writeNullAsString = writeNullAsString;
 	}
 
+	/**
+	 * Get the Jettison readNullAsString property
+	 * @return  the property value
+	 */
 	public boolean isReadNullAsString()
 	{
 		return readNullAsString;
 	}
 
+	/**
+	 * Set the Jettison readNullAsString property
+	 * @param readNullString  the property value
+	 */
 	public void setReadNullAsString(final boolean readNullString)
 	{
 		this.readNullAsString = readNullString;
 	}
 
+	/**
+	 * Get the Jettison ignoreEmptyArrayValues property
+	 * @return  the property value
+	 */
 	public boolean isIgnoreEmptyArrayValues()
 	{
 		return ignoreEmptyArrayValues;
 	}
 
+	/**
+	 * Set the Jettison ignoreEmptyArrayValues property
+	 * @param ignoreEmptyArrayValues  the property value
+	 */
 	public void setIgnoreEmptyArrayValues(final boolean ignoreEmptyArrayValues)
 	{
 		this.ignoreEmptyArrayValues = ignoreEmptyArrayValues;
 	}
 
+	/**
+	 * Set the jettison readNullAsEmptyString property
+	 * @param read property value
+	 */
 	@Deprecated
 	public void setReadNullAsEmptyString(final boolean read)
 	{
 	}
 
+	/**
+	 * Get the Jettison escapeForwardSlashAlways property
+	 * @return  the property value
+	 */
 	public boolean isEscapeForwardSlashAlways()
 	{
 		return escapeForwardSlashAlways;
 	}
 
+	/**
+	 * Set the Jettison escapeForwardSlashAlways property
+	 * @param escapeForwardSlash  the property value
+	 */
 	public void setEscapeForwardSlashAlways(final boolean escapeForwardSlash)
 	{
 		this.escapeForwardSlashAlways = escapeForwardSlash;
 	}
 
+	/**
+	 * Get the Jettison jsonNamespaceSeparator property
+	 * @return  the property value
+	 */
 	public String getJsonNamespaceSeparator()
 	{
 		return jsonNamespaceSeparator;
 	}
 
+	/**
+	 * Set the Jettison jsonNamespaceSeparator property
+	 * @param jsonNamespaceSeparator  the property value
+	 */
 	public void setJsonNamespaceSeparator(final String jsonNamespaceSeparator)
 	{
 		this.jsonNamespaceSeparator = jsonNamespaceSeparator;
@@ -279,11 +412,19 @@ public class Configuration
 	/*
 	 * BEGIN CHANGE to transform specific JSON keys - not starting with $attributeKey - to attributes (opposite of attributesAsElements)
 	 */
+	/**
+	 * Get the Jettison elementsAsAttributes property
+	 * @return  the property value
+	 */
 	public Set<String> getElementsAsAttributes()
 	{
 		return this.elementsAsAttributes;
 	}
 
+	/**
+	 * Set the Jettison elementsAsAttributes property
+	 * @param elementsAsAttributes  the property value
+	 */
 	public void setElementsAsAttributes(final Set<String> elementsAsAttributes)
 	{
 		this.elementsAsAttributes = elementsAsAttributes;

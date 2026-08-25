@@ -4,13 +4,13 @@
       <groupId>org.ow2.authzforce</groupId>
       <artifactId>authzforce-ce-server</artifactId>
       <!-- Version must be equal or higher than authzforce-ce-rest-api-model dependency -->
-      <version>12.0.1</version>
+      <version>12.1.0</version>
       <relativePath>../pom.xml</relativePath>
    </parent>
    <artifactId>authzforce-ce-server-rest-service</artifactId>
    <name>${project.groupId}:${project.artifactId}</name>
    <description>Implementation of RESTful API defined by authzforce-ce-rest-api-model package</description>
-   <url>https://github.com/authzforce/server/rest-service</url>
+   <url>${git.url.base}/rest-service</url>
    <scm>
       <connection>scm:git:${git.url.base}.git</connection>
       <developerConnection>scm:git:${git.url.base}.git</developerConnection>
@@ -39,7 +39,7 @@
       <dependency>
          <groupId>org.ow2.authzforce</groupId>
          <artifactId>authzforce-ce-jaxrs-utils</artifactId>
-         <version>3.0.0</version>
+         <version>3.1.0</version>
       </dependency>
       <dependency>
          <groupId>com.github.spotbugs</groupId>
@@ -72,6 +72,14 @@
                      <name>build.date</name>
                      <pattern>yyyy-MM-dd</pattern>
                   </configuration>
+               </execution>
+               <execution>
+                  <!-- This allows to extract the version parts without the "-SNAPSHOT..." (which is not valid version per XACML schema): ${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion} -->
+                  <id>parse-version</id>
+                  <phase>initialize</phase>
+                  <goals>
+                     <goal>parse-version</goal>
+                  </goals>
                </execution>
             </executions>
          </plugin>

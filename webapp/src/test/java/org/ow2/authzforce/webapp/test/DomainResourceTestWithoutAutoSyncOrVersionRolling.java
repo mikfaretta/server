@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2024 THALES.
+ * Copyright (C) 2012-2026 THALES.
  *
  * This file is part of AuthzForce CE.
  *
@@ -23,6 +23,7 @@ import oasis.names.tc.xacml._3_0.core.schema.wd_17.*;
 import org.apache.cxf.jaxrs.client.ClientConfiguration;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.apache.cxf.jaxrs.provider.BinaryDataProvider;
+import org.apache.cxf.transport.http.HttpClientHTTPConduit;
 import org.json.JSONObject;
 import org.ow2.authzforce.core.pdp.impl.io.MultiDecisionXacmlJaxbRequestPreprocessor;
 import org.ow2.authzforce.core.pdp.impl.io.SingleDecisionXacmlJaxbRequestPreprocessor;
@@ -155,6 +156,9 @@ public class DomainResourceTestWithoutAutoSyncOrVersionRolling extends RestServi
 		} else {
 			httpClient = WebClient.create(appBaseUrl, Collections.singletonList(new JsonRiCxfJaxrsProvider<JSONObject>()), true);
 		}
+
+		// https://cxf.apache.org/docs/client-http-transport-including-ssl-support.html
+		WebClient.getConfig(httpClient).getRequestContext().put("force.urlconnection.http.conduit", true);
 
 		assertNotNull(testDomain, String.format("Error retrieving domain ID=%s", testDomainId));
 	}

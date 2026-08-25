@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2024 THALES.
+ * Copyright (C) 2012-2026 THALES.
  *
  * This file is part of AuthzForce CE.
  *
@@ -474,6 +474,8 @@ abstract class RestServiceTest extends AbstractTestNGSpringContextTests
 
 		final ClientConfiguration[] proxyClientConfs = { WebClient.getConfig(domainsAPIProxyClient), WebClient.getConfig(prodMetadataResClient) };
 		Arrays.stream(proxyClientConfs).forEach(clientConf -> {
+			// https://cxf.apache.org/docs/client-http-transport-including-ssl-support.html
+			clientConf.getRequestContext().put("force.urlconnection.http.conduit", true);
 			clientConf.getOutInterceptors().add(new MediaTypeHeaderSetter(clientFixedContentMediaType));
 			clientConf.getHttpConduit().getClient().setAccept(clientFixedContentMediaType.toString());
 			/*

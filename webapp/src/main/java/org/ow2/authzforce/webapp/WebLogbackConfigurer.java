@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2024 THALES.
+ * Copyright (C) 2012-2026 THALES.
  *
  * This file is part of AuthzForce CE.
  *
@@ -51,14 +51,14 @@ import java.lang.reflect.Method;
 /**
  * Convenience class that performs custom Logback initialization for web environments,
  * allowing for log file paths within the web application.
- * <p/>
+ * <p>
  * <b>WARNING: Assumes an expanded WAR file</b>, both for loading the configuration
  * file and for writing the log files. If you want to keep your WAR unexpanded or
  * don't need application-specific log files within the WAR directory, don't use
  * Logback setup within the application (thus, don't use LogbackConfigListener or
  * LogbackConfigServlet). Instead, use a global, VM-wide Logback setup (for example,
  * in JBoss) or JDK 1.4's <code>java.util.logging</code> (which is global too).
- * <p/>
+ * <p>
  * Supports two init parameters at the servlet context level (that is,
  * context-param entries in web.xml):
  * <ul>
@@ -74,38 +74,40 @@ import java.lang.reflect.Method;
  * specify "false" to suppress expose of the web app root system property. See
  * below for details on how to use this system property in log file locations.
  * </ul>
- * <p/>
+ * <p>
  * Note: <code>initLogging</code> should be called before any other Spring activity
  * (when using Logback), for proper initialization before any Spring logging attempts.
- * <p/>
+ * <p>
  * By default, this configurer automatically sets the web app root system property,
  * for "${key}" substitutions within log file locations in the Logback config file,
  * allowing for log file paths relative to the web application root directory.
  * The default system property key is "webapp.root", to be used in a Logback config
  * file like as follows:
- * <p/>
- * <code>
+ *
+ * <pre>
+ *     {@code
  * <appender name="FILE" class="ch.qos.logback.core.FileAppender">
  * <layout class="ch.qos.logback.classic.PatternLayout">
  * <pattern>%-4relative [%thread] %-5level %class - %msg%n</pattern>
  * </layout>
  * <File>${webapp.root}/WEB-INF/demo.log</File>
  * </appender>
- * </code>
- * <p/>
- * Alternatively, specify a unique context-param "webAppRootKey" per web application.
+ * }
+ * </pre>
+ * <p> Alternatively, specify a unique context-param "webAppRootKey" per web application.
  * For example, with "webAppRootKey = "demo.root":
- * <p/>
- * <code>
+ *
+ * <pre>
+ *     {@code
  * <appender name="FILE" class="ch.qos.logback.core.FileAppender">
  * <layout class="ch.qos.logback.classic.PatternLayout">
  * <pattern>%-4relative [%thread] %-5level %class - %msg%n</pattern>
  * </layout>
  * <File>${demo.root}/WEB-INF/demo.log</File>
  * </appender>
- * </code>
- * <p/>
- * <b>WARNING:</b> Some containers (like Tomcat) do <i>not</i> keep system properties
+ * }
+ * </pre>
+ * <p><b>WARNING:</b> Some containers (like Tomcat) do <i>not</i> keep system properties
  * separate per web app. You have to use unique "webAppRootKey" context-params per web
  * app then, to avoid clashes. Other containers like Resin do isolate each web app's
  * system properties: Here you can use the default key (i.e. no "webAppRootKey"

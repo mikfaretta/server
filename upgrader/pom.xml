@@ -3,13 +3,13 @@
    <parent>
       <groupId>org.ow2.authzforce</groupId>
       <artifactId>authzforce-ce-server</artifactId>
-      <version>12.0.1</version>
+      <version>12.1.0</version>
       <relativePath>../pom.xml</relativePath>
    </parent>
    <artifactId>authzforce-ce-server-upgrader</artifactId>
    <name>${project.groupId}:${project.artifactId}</name>
    <description>Distribution upgrader</description>
-   <url>https://github.com/authzforce/server/upgrader</url>
+   <url>${git.url.base}/upgrader</url>
    <scm>
       <connection>scm:git:${git.url.base}.git</connection>
       <developerConnection>scm:git:${git.url.base}.git</developerConnection>
@@ -141,6 +141,7 @@
             <version>1.6</version>
             <dependencies>
                <dependency>
+                  <!-- 9.1 B is last free/open source version of Saxon supporting Java calls from XSLT, which we use as ivy dependency for the Ant/XSLT build. 9.1.0.8 is the last version available with groupId=net.sourceforge.saxon -->
                   <groupId>net.sourceforge.saxon</groupId>
                   <artifactId>saxon</artifactId>
                   <version>9.1.0.8</version>
@@ -153,7 +154,7 @@
                <dependency>
                   <groupId>org.apache.ivy</groupId>
                   <artifactId>ivy</artifactId>
-                  <version>2.5.1</version>
+                  <version>2.6.0</version>
                </dependency>
                <dependency>
                   <groupId>ant-contrib</groupId>

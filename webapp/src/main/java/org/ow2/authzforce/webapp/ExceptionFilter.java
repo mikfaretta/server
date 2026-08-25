@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2024 THALES.
+ * Copyright (C) 2012-2026 THALES.
  *
  * This file is part of AuthzForce CE.
  *
@@ -39,6 +39,11 @@ public final class ExceptionFilter implements Filter
 		LOGGER.error("Serious error content hidden from client", error);
 		httpResp.sendError(statusCode);
 	}
+
+	/**
+	 * Default constructor
+	 */
+	public ExceptionFilter() {}
 
 	/*
 	 * (non-Javadoc)

@@ -31,10 +31,10 @@ http://cxf.apache.org/configuration/security http://cxf.apache.org/schemas/confi
 
     <cxf:bus>
         <cxf:features>
-            <cxf:logging/>
+            <bean class="org.apache.cxf.ext.logging.LoggingFeature"/>
         </cxf:features>
     </cxf:bus>
-    
+
     <bean id="stsClient" class="org.apache.cxf.ws.security.trust.STSClient">
         <constructor-arg ref="cxf"/>
         <property name="wsdlLocation" value="https://localhost:8443/SecurityTokenService/Transport?wsdl"/>

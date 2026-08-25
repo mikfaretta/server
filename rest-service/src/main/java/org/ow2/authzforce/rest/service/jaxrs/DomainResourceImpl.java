@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2024 THALES.
+ * Copyright (C) 2012-2026 THALES.
  *
  * This file is part of AuthzForce CE.
  *
@@ -51,7 +51,7 @@ import java.util.*;
  *            Domain DAO implementation class
  *
  */
-public class DomainResourceImpl<DAO extends DomainDao<PolicyVersionResourceImpl, PolicyResourceImpl>>
+public final class DomainResourceImpl<DAO extends DomainDao<PolicyVersionResourceImpl, PolicyResourceImpl>>
         implements DomainDaoClient<DAO>, DomainResource, DomainPropertiesResource, PapResource, PdpResource, PoliciesResource, AttributeProvidersResource, PdpPropertiesResource, PrpPropertiesResource
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(DomainResourceImpl.class);
@@ -96,7 +96,7 @@ public class DomainResourceImpl<DAO extends DomainDao<PolicyVersionResourceImpl,
 	 * 
 	 *
 	 */
-	public static class Factory<DOMAIN_DAO extends DomainDao<PolicyVersionResourceImpl, PolicyResourceImpl>>
+	public static final class Factory<DOMAIN_DAO extends DomainDao<PolicyVersionResourceImpl, PolicyResourceImpl>>
 	        implements DomainDaoClient.Factory<PolicyVersionResourceImpl, PolicyResourceImpl, DOMAIN_DAO, DomainResourceImpl<DOMAIN_DAO>>
 	{
 		private static final IllegalArgumentException ILLEGAL_DOMAIN_ID_ARGUMENT_EXCEPTION = new IllegalArgumentException("Domain ID for domain resource undefined");
@@ -442,7 +442,8 @@ public class DomainResourceImpl<DAO extends DomainDao<PolicyVersionResourceImpl,
 		final Object xmlnsContexts = PhaseInterceptorChain.getCurrentMessage().get(PolicyVersionResourceImpl.XML_NS_CONTEXTS_CXF_MESSAGE_CONTEXT_PROPERTY_NAME);
 
 		if(xmlnsContexts == null) {
-			LOGGER.warn("CXF MessageContext property '{}' is undefined. Expected instance of {}. Verify CXF JAXBElementProvider implementation/configuration.", PolicyVersionResourceImpl.XML_NS_CONTEXTS_CXF_MESSAGE_CONTEXT_PROPERTY_NAME, Map.class);
+			LOGGER.warn("CXF MessageContext property '{}' is undefined. Expected instance of {} unless this is a non-XML (e.g. JSON) payload. In case of XML, verify CXF JAXBElementProvider implementation/configuration.", PolicyVersionResourceImpl.XML_NS_CONTEXTS_CXF_MESSAGE_CONTEXT_PROPERTY_NAME,
+					Map.class);
 		} else if(!(xmlnsContexts instanceof Map)) {
 			throw new RuntimeException("Invalid value type of injected CXF MessageContext property '"+ PolicyVersionResourceImpl.XML_NS_CONTEXTS_CXF_MESSAGE_CONTEXT_PROPERTY_NAME +"': " + xmlnsContexts + ". Expected: " + Map.class + "<String, String>");
 		}
@@ -467,6 +468,7 @@ public class DomainResourceImpl<DAO extends DomainDao<PolicyVersionResourceImpl,
 
 		if (conflictingPolicy != null)
 		{
+			LOGGER.error("Policy could not be added because of a conflict with existing Policy (same ID/version): {} v{}", policy.getPolicySetId(), policy.getVersion());
 			throw ADD_POLICY_CONFLICT_EXCEPTION;
 		}
 

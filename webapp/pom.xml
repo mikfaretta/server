@@ -3,16 +3,16 @@
 	<parent>
 		<groupId>org.ow2.authzforce</groupId>
 		<artifactId>authzforce-ce-server</artifactId>
-		<version>12.0.1</version>
+		<version>12.1.0</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<artifactId>authzforce-ce-server-webapp</artifactId>
 	<name>${project.groupId}:${project.artifactId}</name>
 	<packaging>war</packaging>
 	<description>Web application packaging for AuthzForce (PAP/PDP) REST service</description>
-	<url>https://github.com/authzforce/server/webapp</url>
+	<url>${git.url.base}/webapp</url>
 	<properties>
-		<tomcat.version>10.1.18</tomcat.version>
+		<tomcat.version>11.0.25</tomcat.version>
 	</properties>
 	<scm>
 		<connection>scm:git:${git.url.base}.git</connection>
@@ -62,7 +62,7 @@
 		<dependency>
 			<groupId>org.codehaus.jettison</groupId>
 			<artifactId>jettison</artifactId>
-			<version>1.5.4</version>
+			<version>1.5.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
@@ -96,12 +96,14 @@
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
+			<!-- Temporary CVE fix. TODO: upgrade and use parent project version. -->
+			<version>1.6.3</version>
 		</dependency>
 		<!-- For some reason, this dependency is needed at runtime when deployed in Tomcat -->
 		<dependency>
 			<groupId>jakarta.xml.ws</groupId>
 			<artifactId>jakarta.xml.ws-api</artifactId>
-			<version>3.0.1</version>
+			<version>4.0.3</version>
 			<scope>runtime</scope>
 		</dependency>
 
@@ -161,7 +163,6 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.13.2</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -327,6 +328,11 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
+
+					<excludes>
+						<exclude>src/test/java/**</exclude>
+					</excludes>
+
 					<suiteXmlFiles>
 						<!-- Parameters in the XML files seem to be ignored (more info: http://maven.apache.org/surefire/maven-surefire-plugin/examples/testng.html) -->
 						<!-- Using multiple test suites simplifies debugging and prevent some TestNG issues happening when reusing same class/methods over multiple tests in same test suite -->
@@ -338,7 +344,7 @@
 					</suiteXmlFiles>
 					<skipAfterFailureCount>1</skipAfterFailureCount>
 					<!-- redirectTestOutputToFile: set this to 'true' to redirect the unit test standard output to a file (found in reportsDirectory/testName-output.txt) -->
-					<redirectTestOutputToFile>true</redirectTestOutputToFile>
+					<redirectTestOutputToFile>false</redirectTestOutputToFile>
 					<systemPropertyVariables>
 						<javax.xml.accessExternalSchema>all</javax.xml.accessExternalSchema>
 					</systemPropertyVariables>
@@ -355,7 +361,8 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<configuration>
-					<failOnError>false</failOnError>
+					<failOnError>true</failOnError>
+					<excludePackageNames>org.example.*</excludePackageNames>
 				</configuration>
 			</plugin>
 		</plugins>

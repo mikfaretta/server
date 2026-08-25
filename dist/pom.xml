@@ -3,7 +3,7 @@
    <parent>
       <groupId>org.ow2.authzforce</groupId>
       <artifactId>authzforce-ce-server</artifactId>
-      <version>12.0.1</version>
+      <version>12.1.0</version>
       <relativePath>../pom.xml</relativePath>
    </parent>
    <artifactId>authzforce-ce-server-dist</artifactId>
@@ -11,7 +11,7 @@
    <packaging>jar</packaging>
    <name>${project.groupId}:${project.artifactId}</name>
    <description>AuthzForce CE server distribution (zip and deb)</description>
-   <url>https://github.com/authzforce/server/dist</url>
+   <url>${git.url.base}/dist</url>
    <scm>
       <connection>scm:git:${git.url.base}.git</connection>
       <developerConnection>scm:git:${git.url.base}.git</developerConnection>

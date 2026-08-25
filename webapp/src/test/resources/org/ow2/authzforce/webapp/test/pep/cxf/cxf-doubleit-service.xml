@@ -27,7 +27,7 @@
 
    <cxf:bus>
       <cxf:features>
-         <cxf:logging />
+         <bean class="org.apache.cxf.ext.logging.LoggingFeature"/>
       </cxf:features>
    </cxf:bus>
 
@@ -66,7 +66,7 @@
    </bean>
 
    <bean id="xmlMediaTypeSetter" class="org.ow2.authzforce.webapp.test.MediaTypeHeaderSetter">
-      <constructor-arg value="#{T(javax.ws.rs.core.MediaType).APPLICATION_XML_TYPE}" />
+      <constructor-arg value="#{T(jakarta.ws.rs.core.MediaType).APPLICATION_XML_TYPE}" />
    </bean>
    
 <!--    <jaxrs:client id="pdpDomainsResourceClient" address="https://localhost:${testutil.ports.PdpServer}" serviceClass="org.ow2.authzforce.rest.api.jaxrs.DomainsResource"> -->

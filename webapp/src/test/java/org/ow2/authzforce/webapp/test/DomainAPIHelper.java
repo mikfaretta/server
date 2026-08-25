@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2024 THALES.
+ * Copyright (C) 2012-2026 THALES.
  *
  * This file is part of AuthzForce CE.
  *
@@ -133,11 +133,13 @@ class DomainAPIHelper
         final PolicySet newRootPolicySet = jaxbElt.getValue();
         final PoliciesResource policiesRes = domain.getPapResource().getPoliciesResource();
 
+        LOGGER.warn("Resetting PDP/PRP - Adding policy: {}", newRootPolicySet.getPolicySetId());
         try
         {
             policiesRes.addPolicy(newRootPolicySet);
         } catch (final ClientErrorException e)
         {
+            LOGGER.warn("Resetting PDP/PRP - Failed to add policy: {}", e);
             // If this is a conflict, it means it is already added, else something bad happened
             if (e.getResponse().getStatus() != Status.CONFLICT.getStatusCode())
             {
@@ -145,8 +147,10 @@ class DomainAPIHelper
             }
         }
 
+        LOGGER.warn("Resetting PDP/PRP - Policy added successfully");
         final PdpPropertiesResource propsRes = domain.getPapResource().getPdpPropertiesResource();
         final IdReferenceType newRootPolicyRef = new IdReferenceType(newRootPolicySet.getPolicySetId(), null, null, null);
+        LOGGER.warn("Resetting PDP/PRP - Setting enabled features ({}) and root policy ref ({})", pdpFeaturesToEnable, newRootPolicyRef);
         propsRes.updateOtherPdpProperties(new PdpPropertiesUpdate(pdpFeaturesToEnable, newRootPolicyRef));
 
         // Delete all other policies
@@ -160,6 +164,7 @@ class DomainAPIHelper
                 continue;
             }
 
+            LOGGER.warn("Resetting PDP/PRP - Removing unsued policy: {}", policyId);
             policiesRes.getPolicyResource(policyId).deletePolicy();
         }
     }
@@ -363,6 +368,7 @@ class DomainAPIHelper
     protected String testAddAndGetPolicy(final PolicySet policySet) throws ClientErrorException
     {
         // put new policyset
+        LOGGER.warn("Adding policy: {}", policySet.getPolicySetId());
         final Link link = domain.getPapResource().getPoliciesResource().addPolicy(policySet);
         final String policyHref = link.getHref();
         final String[] parts = policyHref.split("/");
@@ -393,12 +399,14 @@ class DomainAPIHelper
         final PdpPropertiesResource propsRes = domain.getPapResource().getPdpPropertiesResource();
         final PdpProperties oldProps = propsRes.getOtherPdpProperties();
         final IdReferenceType newRootPolicyRef = new IdReferenceType(policyId, version, null, null);
+        LOGGER.warn("Setting root policy to: {}", policyId);
         propsRes.updateOtherPdpProperties(new PdpPropertiesUpdate(oldProps.getFeatures(), newRootPolicyRef));
         return newRootPolicyRef;
     }
 
     protected IdReferenceType setRootPolicy(final PolicySet policySet, final boolean ignoreVersion)
     {
+        LOGGER.warn("Adding policy: {}", policySet.getPolicySetId());
         try
         {
             domain.getPapResource().getPoliciesResource().addPolicy(policySet);
@@ -546,6 +554,7 @@ class DomainAPIHelper
         {
             // replace old with new attribute providers
             // reset attribute providers
+            LOGGER.warn("Clearing the Attribute Provider list");
             domain.getPapResource().getAttributeProvidersResource().updateAttributeProviderList(new AttributeProviders(Collections.emptyList()));
 
             /*
@@ -558,6 +567,8 @@ class DomainAPIHelper
             }
 
             final JAXBElement<AbstractAttributeProvider> jaxbElt = unmarshalRestApiEntity(attributeProviderFile, AbstractAttributeProvider.class);
+            final AbstractAttributeProvider attProvider = jaxbElt.getValue();
+            LOGGER.warn("Setting the Attribute Provider list to singleton: {}", attProvider);
             domain.getPapResource().getAttributeProvidersResource().updateAttributeProviderList(new AttributeProviders(Collections.singletonList(jaxbElt.getValue())));
         }
 
@@ -576,7 +587,7 @@ class DomainAPIHelper
                     {
                         final JAXBElement<PolicySet> policy = unmarshalXacml(policyFile, PolicySet.class);
                         testAddAndGetPolicy(policy.getValue());
-                        LOGGER.debug("Added policy from file: " + policyFile);
+                        LOGGER.warn("Added policy from file: " + policyFile);
                     }
                 }
             }
@@ -631,7 +642,6 @@ class DomainAPIHelper
             final JSONObject xacmlReq;
             try (final InputStream inputStream = new FileInputStream(xacmlReqFile))
             {
-
                 xacmlReq = new JSONObject(new JSONTokener(inputStream));
                 if (!xacmlReq.has("Request"))
                 {
@@ -647,7 +657,6 @@ class DomainAPIHelper
             {
                 try (InputStream inputStream = new FileInputStream(xacmlRespFile))
                 {
-
                     expectedResponse = new JSONObject(new JSONTokener(inputStream));
                     if (!expectedResponse.has("Response"))
                     {
@@ -663,16 +672,15 @@ class DomainAPIHelper
             }
 
             final String mediaType = customMediaType.orElse("application/xacml+json");
+            LOGGER.warn("Sending XACML/JSON request to PDP");
             try
             {
                 final JSONObject actualResponse = httpClient.reset().path("domains").path(domainId).path("pdp").type(mediaType).accept(mediaType).post(xacmlReq,
                         JSONObject.class);
-
                 // final Response actualResponse = testDomainFI.getPdpResource().requestPolicyDecision(xacmlReq.getValue());
-
                 assertNormalizedXacmlJsonResponseEquals(expectedResponse, actualResponse);
             } catch(BadRequestException ex) {
-                LOGGER.debug("PDP response error", ex);
+                LOGGER.warn("PDP response error", ex);
                 assertNull(expectedResponse, "Actual response was not an error as expected");
             }
         });
