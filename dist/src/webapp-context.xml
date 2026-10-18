@@ -84,10 +84,4 @@
 			value="134217728"
 			override="false" />
 
-	<Environment
-			name="org.ow2.authzforce.domains.xacmlJsonSchemaRelativePath"
-			description="Path to JSON schema file for XACML JSON Profile's Request validation, relative to ${org.ow2.authzforce.config.dir} (if undefined/empty value, the Request.schema.json file from authzforce-ce-xacml-json-model project is used by default). This property applies if and only if 'org.ow2.authzforce.domains.enableXacmlJsonProfile' is true."
-			type="java.lang.String"
-			value=""
-			override="false" />
 </Context>
