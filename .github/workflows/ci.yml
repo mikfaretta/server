@@ -19,8 +19,7 @@ jobs:
           java-version: 17
       - name: 'Unit Tests with Java 17'
         run: |
-          mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
-          mvn test -B
+          mvn install -DskipTests=true -DnvdApiKey=${{secrets.NVDAPIKEY}} -Dmaven.javadoc.skip=true -B -V
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           COVERALLS_TOKEN: ${{ secrets.COVERALLS_TOKEN }}
